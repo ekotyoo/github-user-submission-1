@@ -64,8 +64,8 @@ class ListUserFragment : Fragment() {
 
     private fun showRecyclerList() {
         binding?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
-        val listHeroAdapter = ListUserAdapter(listUsers)
-        listHeroAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+        val listUserAdapter = ListUserAdapter(listUsers)
+        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
                 val mBundle = Bundle().apply {
                     putParcelable(UserDetailFragment.EXTRA_USER, user)
@@ -87,6 +87,6 @@ class ListUserFragment : Fragment() {
             }
 
         })
-        binding?.rvUsers?.adapter = listHeroAdapter
+        binding?.rvUsers?.adapter = listUserAdapter
     }
 }
