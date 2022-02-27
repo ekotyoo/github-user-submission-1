@@ -42,6 +42,8 @@ class ListUserFragment : Fragment(R.layout.fragment_list_user) {
                 )
                 listUsers.add(user)
             }
+            dataAvatar.recycle()
+
             return listUsers
         }
 
