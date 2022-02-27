@@ -1,18 +1,28 @@
 package com.example.githubuser
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.githubuser.databinding.FragmentListUserBinding
 
-class ListUserFragment : Fragment(R.layout.fragment_list_user) {
-    private lateinit var rvUsers: RecyclerView
+class ListUserFragment : Fragment() {
+    private var binding: FragmentListUserBinding? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentListUserBinding.inflate(inflater, container, false)
+        return binding!!.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rvUsers = view.findViewById(R.id.rv_users)
-        rvUsers.setHasFixedSize(true)
+        binding?.rvUsers?.setHasFixedSize(true)
         showRecyclerList()
     }
 
@@ -47,8 +57,13 @@ class ListUserFragment : Fragment(R.layout.fragment_list_user) {
             return listUsers
         }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
     private fun showRecyclerList() {
-        rvUsers.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvUsers?.layoutManager = LinearLayoutManager(requireContext())
         val listHeroAdapter = ListUserAdapter(listUsers)
         listHeroAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(user: User) {
@@ -62,12 +77,16 @@ class ListUserFragment : Fragment(R.layout.fragment_list_user) {
                 }
 
                 mFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, mUserDetailFragment, UserDetailFragment::class.java.simpleName)
+                    .replace(
+                        R.id.fragment_container,
+                        mUserDetailFragment,
+                        UserDetailFragment::class.java.simpleName
+                    )
                     .addToBackStack(null)
                     .commit()
             }
 
         })
-        rvUsers.adapter = listHeroAdapter
+        binding?.rvUsers?.adapter = listHeroAdapter
     }
 }

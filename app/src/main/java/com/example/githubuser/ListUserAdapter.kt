@@ -1,52 +1,45 @@
 package com.example.githubuser
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubuser.databinding.ItemRowUserBinding
 import com.squareup.picasso.Picasso
 
 class ListUserAdapter(private val users: ArrayList<User>) :
     RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    interface OnItemClickCallback {
-        fun onItemClicked(user: User)
-    }
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
-
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var ivAvatar: ImageView = itemView.findViewById(R.id.iv_avatar)
-        var tvName: TextView = itemView.findViewById(R.id.tv_name)
-        var tvUsername: TextView = itemView.findViewById(R.id.tv_username)
-    }
+    class ListViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ListViewHolder {
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
-        return ListViewHolder(view)
+        val binding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        users[position].avatar?.let { image ->
-            Picasso.get().load(image).into(holder.ivAvatar)
-        }
-        holder.tvName.text = users[position].name
-        holder.tvUsername.text =
-            holder.itemView.context.getString(R.string.username, users[position].username)
-        holder.itemView.setOnClickListener {
-            onItemClickCallback.onItemClicked(users[position])
+        holder.binding.apply {
+            tvName.text = users[position].name
+            tvUsername.text = root.context.getString(R.string.username, users[position].username)
+            users[position].avatar?.let { image ->
+                Picasso.get().load(image).into(ivAvatar)
+            }
+            root.setOnClickListener {
+                onItemClickCallback.onItemClicked(users[position])
+            }
         }
     }
 
     override fun getItemCount(): Int = users.size
 
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(user: User)
+    }
 }
