@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
-class ListUserAdapter(private val users: ArrayList<User>): RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+class ListUserAdapter(private val users: ArrayList<User>) :
+    RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     interface OnItemClickCallback {
@@ -28,14 +30,18 @@ class ListUserAdapter(private val users: ArrayList<User>): RecyclerView.Adapter<
         parent: ViewGroup,
         viewType: Int
     ): ListViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
         return ListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        users[position].avatar?.let { holder.ivAvatar.setImageResource(it) }
+        users[position].avatar?.let { image ->
+            Picasso.get().load(image).into(holder.ivAvatar)
+        }
         holder.tvName.text = users[position].name
-        holder.tvUsername.text = holder.itemView.context.getString(R.string.username, users[position].username)
+        holder.tvUsername.text =
+            holder.itemView.context.getString(R.string.username, users[position].username)
         holder.itemView.setOnClickListener {
             onItemClickCallback.onItemClicked(users[position])
         }

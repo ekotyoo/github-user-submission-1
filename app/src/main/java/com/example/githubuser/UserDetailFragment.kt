@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 class UserDetailFragment : Fragment(R.layout.fragment_user_detail), View.OnClickListener {
     private lateinit var tvName: TextView
@@ -17,9 +18,9 @@ class UserDetailFragment : Fragment(R.layout.fragment_user_detail), View.OnClick
     private lateinit var tvFollowersCount: TextView
     private lateinit var tvFollowingCount: TextView
     private lateinit var tvLocation: TextView
-    private lateinit var tvCompany:TextView
-    private lateinit var btnBack:ImageButton
-    private lateinit var btnShare:Button
+    private lateinit var tvCompany: TextView
+    private lateinit var btnBack: ImageButton
+    private lateinit var btnShare: Button
     private var user: User? = null
 
     companion object {
@@ -44,7 +45,9 @@ class UserDetailFragment : Fragment(R.layout.fragment_user_detail), View.OnClick
             user = arguments?.getParcelable(EXTRA_USER)
             tvName.text = user?.name
             tvUsername.text = getString(R.string.username, user?.username)
-            ivAvatar.setImageResource(user?.avatar ?: -1)
+            user?.avatar?.let { image ->
+                Picasso.get().load(image).into(ivAvatar)
+            }
             tvRepositoryCount.text = user?.repository.toString()
             tvFollowersCount.text = user?.followers.toString()
             tvFollowingCount.text = user?.following.toString()
@@ -57,10 +60,10 @@ class UserDetailFragment : Fragment(R.layout.fragment_user_detail), View.OnClick
     }
 
     override fun onClick(view: View?) {
-            when (view?.id) {
-                R.id.btn_back -> activity?.onBackPressed()
-                R.id.btn_share -> shareGithub(user?.username)
-            }
+        when (view?.id) {
+            R.id.btn_back -> activity?.onBackPressed()
+            R.id.btn_share -> shareGithub(user?.username)
+        }
     }
 
     private fun shareGithub(username: String?) {
