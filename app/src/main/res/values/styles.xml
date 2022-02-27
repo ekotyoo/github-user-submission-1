@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Header" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Title" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Subtitle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+</resources>
