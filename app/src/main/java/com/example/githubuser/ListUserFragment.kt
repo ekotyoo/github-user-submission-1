@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.FragmentListUserBinding
 
+
 class ListUserFragment : Fragment() {
     private var binding: FragmentListUserBinding? = null
 
@@ -77,6 +78,12 @@ class ListUserFragment : Fragment() {
                 }
 
                 mFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out,
+                        R.anim.fade_in,
+                        R.anim.slide_out
+                    )
                     .replace(
                         R.id.fragment_container,
                         mUserDetailFragment,
@@ -85,7 +92,6 @@ class ListUserFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
-
         })
         binding?.rvUsers?.adapter = listUserAdapter
     }
